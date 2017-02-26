@@ -205,6 +205,26 @@ public class Cube {
 		
 	}
 	
+	//Rotates the given face indicated by the number associated with it
+	//top-5, left-4, back-3, right-2, front-1, bottom-0
+	public void performRotation(int i){
+		switch(i){
+		case 0: bottomClock();
+		break;
+		case 1: frontClock();
+		break;
+		case 2: rightClock();
+		break;
+		case 3: backClock();
+		break;
+		case 4: leftClock();
+		break;
+		case 5: topClock();
+		break;
+			
+		}
+	}
+	
 	private void faceDebugger(){
 		for(int k = 0; k < 6; k++){
 			System.out.println("FACE k = " + k + ": ");
