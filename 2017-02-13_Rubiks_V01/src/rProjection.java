@@ -7,14 +7,17 @@ public class rProjection extends JPanel{
 	//Shuffle, Timed Step shuffle
 	//AI STEP SOLVE, AI QUICK SOLVE
 	private JButton shuffle, stepShuffle;
-	private boolean ssOn = false;
+	private boolean st_on = false;	//Step Shuffle Timer
+	private boolean at_on = false;	//AI Step Solve Timer
 	//Timer is associated with the step-solving of the AI
 	private EventListener el = new EventListener();
 	private JButton solve, stepSolve;
 	private int solnPath[];
+	private int aiSolnIndex = 0;
 	
 	private rubiksAgent ra;
-	Timer timer = new Timer(100, el);
+	Timer shTimer = new Timer(100, el);
+	Timer aiTimer = new Timer(400, el);
 	
 	public rProjection(Cube c){
 		cube = c;
@@ -185,12 +188,13 @@ public class rProjection extends JPanel{
 		public void actionPerformed(ActionEvent event){
 			if(event.getSource() == shuffle)
 				cube.shuffle(4);
+			
 			if(event.getSource() == stepShuffle){
-				ssOn = !ssOn;
-				if(ssOn)
-					timer.start();
+				st_on = !st_on;
+				if(st_on)
+					shTimer.start();
 				else
-					timer.stop();
+					shTimer.stop();
 				cube.shuffle();
 			}
 			if(event.getSource() == solve){
@@ -199,13 +203,30 @@ public class rProjection extends JPanel{
 				System.out.println("mADE_________it --" + ra);
 				solnPath = ra.getSolution(cube);
 				for(int i = 0; i < solnPath.length; i++){
-					System.out.println(solnPath[i] + ", ");
+					System.out.print(solnPath[i] + " ");
+				}
+				System.out.println("<-- rProjection");
+				aiTimer.start();
+			}
+			if(event.getSource() == stepSolve){
+				if(!at_on)
+					aiTimer.start();
+				//else NOT QUITE READY TO TURN IT OFF :/
+				//	aiTimer.stop();
+			}//For handling the events of the Step Shuffle Timer
+			if(event.getSource() == shTimer)
+				cube.shuffle();
+			//For handling the events of the AI Step Solve Timer
+			if(event.getSource() == aiTimer){
+				if(aiSolnIndex < solnPath.length){
+					System.out.println("solnPath[" + aiSolnIndex + "]: " + solnPath[aiSolnIndex]);
+					cube.performRotation(solnPath[aiSolnIndex]);
+					aiSolnIndex++;
+				}else{
+					System.out.println("rProjection AI Step Solver has finished :)");
 				}
 			}
-			if(event.getSource() == stepSolve)
-				//cube.shuffle(4);
-			if(event.getSource() == timer)
-				cube.shuffle();
+			
 			repaint();
 		}
 	}

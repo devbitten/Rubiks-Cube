@@ -9,8 +9,8 @@ public class Main {
 		Cube cube = new Cube();
 		rubiksAgent ra = new rubiksAgent(cube);
 		JTabbedPane tp = new JTabbedPane();
-		tp.addTab("Manual Input", new rInput(cube, ra));
 		tp.addTab("3D Projection", new rProjection(cube));
+		tp.addTab("Manual Input", new rInput(cube, ra));
 		tp.addTab("Layout", new rLayout(cube));
 		//JPanel gPanel = new JPanel();
 
