@@ -322,6 +322,31 @@ public class Cube {
 		}
 	}
 	
+	public void sysState(Cube c){
+		for(int i = 0; i < 6; i++){
+			switch (i){
+			case 0 : System.out.println("Bottom:");
+			break;
+			case 1 : System.out.println("Front:");
+			break;
+			case 2 : System.out.println("Right:");
+			break;
+			case 3 : System.out.println("Back (weird):");
+			break;
+			case 4 : System.out.println("Left:");
+			break;
+			case 5 : System.out.println("Top:");
+			break;
+			}
+			for(int j = 0; j < 3; j++){
+				for(int k = 0; k < 3; k++){
+					System.out.print( c.faceColor(j, k, i).substring(0, 1) );
+				}
+				System.out.println();
+			}
+		}
+	}
+	
 	//HEURISTIC CHECKING FUNCTIONS~~~~~~~~~
 	//CHECKS BOTTOM CROSS
 	public boolean checkH1(){

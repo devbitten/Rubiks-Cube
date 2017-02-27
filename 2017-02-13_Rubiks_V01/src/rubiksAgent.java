@@ -58,7 +58,7 @@ public class rubiksAgent {
 					exploredPaths = addFrontier(fringe, exploredPaths);
 
 				//* TEST FOR PERFORMING THE SOLUTION :3
-				System.out.println(" TEST FOR PERFORMING THE SOLUTION :3");
+				System.out.println(" TESTING FOR PERFORMING THE SOLUTION :3");
 				if(heuristicAchievedIndex != -1){
 
 					System.out.println("exploredPaths.get(0).length === " + exploredPaths.get(0).length);
@@ -195,7 +195,8 @@ public class rubiksAgent {
 		if(h == 1){
 			for(int i = 0; i < s.size(); i++){
 				for(int j = 0; j < s.get(i).length; j++){
-					
+					if(i == 0 && j == 0)
+						tempCube.sysState(tempCube);
 					int op = s.get(i)[j];
 					tempCube.performRotation(op);
 					
@@ -205,6 +206,8 @@ public class rubiksAgent {
 					LOWESTGFC = tempCube.facesIncorrect(tempCube);
 				if(tempCube.checkH1()){
 					System.out.println("H1 IS FOUND~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+					System.out.println("vvv--- SOLVED tempCube ---vvv");
+					tempCube.sysState(tempCube);
 					isMet = tempCube.checkH1();
 					foundAt = i;
 					for(int q = 0 ; q < s.get(foundAt).length; q++ ){
