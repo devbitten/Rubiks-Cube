@@ -206,7 +206,8 @@ public class rProjection extends JPanel{
 					System.out.print(solnPath[i] + " ");
 				}
 				System.out.println("<-- rProjection");
-				aiTimer.start();
+				if(!at_on)
+					aiTimer.start();
 			}
 			if(event.getSource() == stepSolve){
 				if(!at_on)
@@ -224,6 +225,8 @@ public class rProjection extends JPanel{
 					aiSolnIndex++;
 				}else{
 					System.out.println("rProjection AI Step Solver has finished :)");
+					aiSolnIndex = 0;
+					aiTimer.stop();
 				}
 			}
 			

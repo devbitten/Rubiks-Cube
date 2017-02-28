@@ -6,8 +6,8 @@ public class Cube {
 	//  Y COORDINATE FROM UPPER LEFT,
 	//  FACE VALUE]
 	// 0-0, 1-0, 2-0
-	// 0-0, 1-0, 2-0
-	// 0-0, 1-0, 2-0
+	// 0-1, 1-1, 2-1
+	// 0-2, 1-2, 2-2
 	//THE DEFAULT X,Y ORIENTATION FOR THE CUBE IS
 	//			TOP
 	//		LEF	FRO	RIG
@@ -340,35 +340,61 @@ public class Cube {
 			}
 			for(int j = 0; j < 3; j++){
 				for(int k = 0; k < 3; k++){
-					System.out.print( c.faceColor(j, k, i).substring(0, 1) );
+					System.out.print( c.faceColor(k, j, i).substring(0, 1) );
 				}
 				System.out.println();
 			}
 		}
 	}
 	
-	//HEURISTIC CHECKING FUNCTIONS~~~~~~~~~
-	//CHECKS BOTTOM CROSS
-	public boolean checkH1(){
-		boolean cross = true;
-		//Checks bottom faces
+	//Returns number of correct faces for current heuristic (h)
+	//GOALS for h=1 >> 8
+	public int checkHeuristic(int h){
+		int facesMet = 0;
+		if(h == 1){
+		//Adds one for each of the faces meeting the right color
 		String bottomFace = faceColor(1, 1, 0);
-		if( !bottomFace.equals(faceColor(1, 0, 0)) || 
-				!bottomFace.equals(faceColor(2, 1, 0)) || 
-				!bottomFace.equals(faceColor(0, 2, 0)) || 
-				!bottomFace.equals(faceColor(1, 2, 0)) )
-			cross = false;
+		facesMet = bottomFace.equals(faceColor(1, 0, 0)) ? ++facesMet : facesMet;
+		facesMet = bottomFace.equals(faceColor(2, 1, 0)) ? ++facesMet : facesMet;
+		facesMet = bottomFace.equals(faceColor(0, 1, 0)) ? ++facesMet : facesMet;
+		facesMet = bottomFace.equals(faceColor(1, 2, 0)) ? ++facesMet : facesMet;
+		
 		//Checks the side of the cross
 		String frontFace = faceColor(1, 1, 1);
 		String rightFace = faceColor(1, 1, 2);
 		String backFace = faceColor(1, 1, 3);
 		String leftFace = faceColor(1, 1, 4);
-		if( !frontFace.equals(faceColor(1, 2, 1)) || 
-				!rightFace.equals(faceColor(1, 2, 2)) || 
-				!backFace.equals(faceColor(1, 0, 3)) || 
-				!leftFace.equals(faceColor(1, 2, 4)) )
-			cross = false;
-		return cross;
+		facesMet = frontFace.equals(faceColor(1, 2, 1)) ? ++facesMet : facesMet;
+		facesMet = rightFace.equals(faceColor(1, 2, 2)) ? ++facesMet : facesMet;
+		facesMet = backFace.equals(faceColor(1, 0, 3)) ? ++facesMet : facesMet;
+		facesMet = leftFace.equals(faceColor(1, 2, 4)) ? ++facesMet : facesMet;
+		}
+		return facesMet;
+	}
+	
+	//HEURISTIC CHECKING FUNCTIONS~~~~~~~~~
+	//CHECKS BOTTOM CROSS
+	public boolean checkH1(){
+		boolean sides = false;
+		boolean cross = false;
+		//Checks bottom faces
+		String bottomFace = faceColor(1, 1, 0);
+		if( bottomFace.equals(faceColor(1, 0, 0)) && 
+				bottomFace.equals(faceColor(2, 1, 0)) && 
+				bottomFace.equals(faceColor(0, 1, 0)) && 
+				bottomFace.equals(faceColor(1, 2, 0)) )
+			cross = true;
+		//Checks the side of the cross
+		String frontFace = faceColor(1, 1, 1);
+		String rightFace = faceColor(1, 1, 2);
+		String backFace = faceColor(1, 1, 3);
+		String leftFace = faceColor(1, 1, 4);
+		if( frontFace.equals(faceColor(1, 2, 1)) && 
+				rightFace.equals(faceColor(1, 2, 2)) && 
+				backFace.equals(faceColor(1, 0, 3)) && 
+				leftFace.equals(faceColor(1, 2, 4)) )
+			sides = true;
+		return (cross && sides);
 	}
 	
 	//This checks for the entire bottom layer
