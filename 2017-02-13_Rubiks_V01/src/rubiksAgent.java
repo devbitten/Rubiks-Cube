@@ -40,13 +40,16 @@ public class rubiksAgent {
 				
 				ArrayList<int[]> fringe = new ArrayList<int[]>();
 				fringe = expandFrontier(exploredPaths);
+				//Prints out the fringe
 				for(int o = 0; o < fringe.size(); o++){
 					for(int n = 0; n < fringe.get(o).length; n++){
 						System.out.print(fringe.get(o)[n] + "--");
 					}
 					System.out.println("<-- fringe");
 				}
+				
 				int heuristicAchievedIndex = checkFrontier(fringe, hi+1);
+				
 				System.out.println(heuristicAchievedIndex + " * * * " + hi + "**************" + LOWESTGFC);
 				if(heuristicAchievedIndex != -1){
 					int[] goodBranch = fringe.get(heuristicAchievedIndex);
@@ -55,7 +58,7 @@ public class rubiksAgent {
 					h[hi] = true;
 					hi++;
 				}else
-					exploredPaths = addFrontier(fringe, exploredPaths);
+					exploredPaths = addFrontier(fringe, exploredPaths, hi);
 
 				//* TEST FOR PERFORMING THE SOLUTION :3
 				System.out.println(" TESTING FOR PERFORMING THE SOLUTION :3");
@@ -123,7 +126,7 @@ public class rubiksAgent {
 			if(flip == 0)
 				selection = rn.nextInt(16);
 			else
-				selection = rn.nextInt(2*s.size()/3 + 4);
+				selection = rn.nextInt(2*s.size()/4 + 4);
 			arrayAtSelect = new int[s.get(selection).length];
 			for(int k = 0; k < s.get(selection).length; k++){
 				arrayAtSelect[k] = s.get(selection)[k];
@@ -195,8 +198,8 @@ public class rubiksAgent {
 		if(h == 1){
 			for(int i = 0; i < s.size(); i++){
 				for(int j = 0; j < s.get(i).length; j++){
-					if(i == 0 && j == 0)
-						tempCube.sysState(tempCube);
+					//if(i == 0 && j == 0)
+						//tempCube.sysState(tempCube);
 					int op = s.get(i)[j];
 					tempCube.performRotation(op);
 					
@@ -206,8 +209,9 @@ public class rubiksAgent {
 					LOWESTGFC = tempCube.facesIncorrect(tempCube);
 				if(tempCube.checkH1()){
 					System.out.println("H1 IS FOUND~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
-					System.out.println("vvv--- SOLVED tempCube ---vvv");
+					//System.out.println("vvv--- SOLVED tempCube ---vvv");
 					tempCube.sysState(tempCube);
+					System.out.println( tempCube.checkHeuristic(1) );
 					isMet = tempCube.checkH1();
 					foundAt = i;
 					for(int q = 0 ; q < s.get(foundAt).length; q++ ){
@@ -279,8 +283,9 @@ public class rubiksAgent {
 	
 	///UNTESTED-DONE
 	//Sorts through the current frontier and puts the into the
-	//sorted array of exploredPaths ArrayList<int[]>
-	public ArrayList<int[]> addFrontier(ArrayList<int[]> f, ArrayList<int[]> old){
+	//sorted array of exploredPaths ArrayList<int[]> 
+	//SORTS BY heuristic indicated by hi
+	public ArrayList<int[]> addFrontier(ArrayList<int[]> f, ArrayList<int[]> old, int hi){
 		ArrayList<int[]> nw = (ArrayList<int[]>) old.clone();
 		int fIndex = 0;
 		int aIndex = 0;
